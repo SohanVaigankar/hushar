@@ -10,18 +10,23 @@ import { ChatCompletionUserMessageParam } from "openai/resources/index.mjs";
 
 // components
 import {
+  Input,
+  Button,
+  Form,
+  FormField,
+  FormItem,
+  FormControl,
+} from "@/components/ui";
+import {
   Heading,
   NoDataAvailable,
   Loader,
   UserAvatar,
   BotAvatar,
 } from "@/components/atoms";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 
 // icons
-import { MessageSquare } from "lucide-react";
+import { Music } from "lucide-react";
 
 // utils & constants
 import { formSchema } from "./constants";
@@ -31,7 +36,7 @@ const defaultValues = {
   prompt: "",
 };
 
-const ConversationPage = () => {
+const MusicGenerationPage = () => {
   const router = useRouter();
 
   const [messages, setMessages] = useState<ChatCompletionUserMessageParam[]>(
@@ -50,7 +55,7 @@ const ConversationPage = () => {
           <Input
             className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
             disabled={form?.formState?.isSubmitting}
-            placeholder="What's the radius of the sun?"
+            placeholder="Linkin Park style drumrolls"
             {...field}
           />
         </FormControl>
@@ -84,11 +89,11 @@ const ConversationPage = () => {
   return (
     <div>
       <Heading
-        title="Conversation"
-        description="Our most advance conversation model"
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
+        title="Music Generation"
+        description="convert descriptive thoughts to beats and melodies"
+        icon={Music}
+        iconColor="text-green-500"
+        bgColor="bg-green-500/10"
       />
       <div className="px-4 lg:px-8">
         <div>
@@ -117,7 +122,7 @@ const ConversationPage = () => {
             </div>
           )}
           {messages?.length === 0 && !form?.formState?.isSubmitting ? (
-            <NoDataAvailable label="No conversation started" />
+            <NoDataAvailable label="No music generated" />
           ) : (
             <div className="flex flex-col-reverse gap-y-4 ">
               {messages?.map((message, index) => (
@@ -142,4 +147,4 @@ const ConversationPage = () => {
   );
 };
 
-export default ConversationPage;
+export default MusicGenerationPage;

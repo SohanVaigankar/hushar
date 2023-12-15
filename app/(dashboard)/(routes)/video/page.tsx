@@ -16,12 +16,18 @@ import {
   UserAvatar,
   BotAvatar,
 } from "@/components/atoms";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
+// shadcn components
+import {
+  Input,
+  Button,
+  Form,
+  FormField,
+  FormItem,
+  FormControl,
+} from "@/components/ui";
 
 // icons
-import { MessageSquare } from "lucide-react";
+import { Video } from "lucide-react";
 
 // utils & constants
 import { formSchema } from "./constants";
@@ -31,7 +37,7 @@ const defaultValues = {
   prompt: "",
 };
 
-const ConversationPage = () => {
+const VideoGenerationPage = () => {
   const router = useRouter();
 
   const [messages, setMessages] = useState<ChatCompletionUserMessageParam[]>(
@@ -84,11 +90,11 @@ const ConversationPage = () => {
   return (
     <div>
       <Heading
-        title="Conversation"
-        description="Our most advance conversation model"
-        icon={MessageSquare}
-        iconColor="text-violet-500"
-        bgColor="bg-violet-500/10"
+        title="Video Generator"
+        description="imagining the impossible with the power of AI"
+        icon={Video}
+        iconColor="text-orange-700"
+        bgColor="bg-orange-700/10"
       />
       <div className="px-4 lg:px-8">
         <div>
@@ -117,7 +123,7 @@ const ConversationPage = () => {
             </div>
           )}
           {messages?.length === 0 && !form?.formState?.isSubmitting ? (
-            <NoDataAvailable label="No conversation started" />
+            <NoDataAvailable label="No video generated" />
           ) : (
             <div className="flex flex-col-reverse gap-y-4 ">
               {messages?.map((message, index) => (
@@ -142,4 +148,4 @@ const ConversationPage = () => {
   );
 };
 
-export default ConversationPage;
+export default VideoGenerationPage;
