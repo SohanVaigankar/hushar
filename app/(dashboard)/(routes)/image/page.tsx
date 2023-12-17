@@ -7,6 +7,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 // components
 import { Heading, NoDataAvailable, Loader } from "@/components/atoms";
@@ -27,6 +28,9 @@ import {
   FormControl,
 } from "@/components/ui";
 
+// hooks
+import { useModal } from "@/hooks";
+
 // icons
 import { ImageIcon, Download } from "lucide-react";
 
@@ -41,6 +45,7 @@ const defaultValues = {
 
 const ImageGenerationPage = () => {
   const router = useRouter();
+  const modal = useModal();
   const [images, setImages] = useState<string[]>([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -128,6 +133,11 @@ const ImageGenerationPage = () => {
       form.reset();
     } catch (error: any) {
       console.error("onSubmit", error);
+      if (error?.response?.status === 403) {
+        modal.onOpen();
+      } else {
+        toast.error("something went wrong");
+      }
     } finally {
       router.refresh();
     }

@@ -3,62 +3,18 @@
 import { useRouter } from "next/navigation";
 
 // icons
-import {
-  ArrowRight,
-  Code,
-  ImageIcon,
-  MessageSquare,
-  Music,
-  VideoIcon,
-} from "lucide-react";
+import { ArrowRight, LucideIcon } from "lucide-react";
 
 // components
-import { Card } from "@/components/ui/card";
+import { Card } from "@/components/ui";
 
 // utils
 import { cn } from "@/lib/utils";
-
-export const tools = [
-  {
-    label: "Conversation",
-    icon: MessageSquare,
-    color: "text-violet-500",
-    bgColor: "bg-violet-500/10",
-    path: "/conversation",
-  },
-  {
-    label: "Music Generation",
-    icon: Music,
-    color: "text-emerald-500",
-    bgColor: "bg-emerald-500/10",
-    path: "/music",
-  },
-  {
-    label: "Image Generation",
-    icon: ImageIcon,
-    color: "text-pink-700",
-    bgColor: "bg-pink-700/10",
-    path: "/image",
-  },
-  {
-    label: "Video Generation",
-    icon: VideoIcon,
-    color: "text-orange-700",
-    bgColor: "bg-orange-700/10",
-    path: "/video",
-  },
-  {
-    label: "Code Generation",
-    icon: Code,
-    color: "text-green-700",
-    bgColor: "bg-green-700/10",
-    path: "/code",
-  },
-];
+import { TOOLS } from "@/lib/constants";
 
 type toolType = {
   label: string;
-  icon: React.ReactNode;
+  icon: LucideIcon;
   color: string;
   bgColor: string;
   path: string;
@@ -82,7 +38,7 @@ const DashboardPage = () => {
         </p>
       </div>
       <div className="px-4 md:px-20 lg:px-32 space-y-4">
-        {tools?.map((tool) => (
+        {TOOLS?.map((tool) => (
           <Card
             key={tool?.path}
             className="p-4 border-black/5 flex items-center justify-between hover:shadow-md transition cursor-pointer"

@@ -6,7 +6,7 @@ import * as z from "zod";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChatCompletionUserMessageParam } from "openai/resources/index.mjs";
+import toast from "react-hot-toast";
 
 // components
 import {
@@ -17,20 +17,16 @@ import {
   FormItem,
   FormControl,
 } from "@/components/ui";
-import {
-  Heading,
-  NoDataAvailable,
-  Loader,
-  UserAvatar,
-  BotAvatar,
-} from "@/components/atoms";
+import { Heading, NoDataAvailable, Loader } from "@/components/atoms";
+
+// hooks
+import { useModal } from "@/hooks";
 
 // icons
 import { Music } from "lucide-react";
 
 // utils & constants
 import { formSchema } from "./constants";
-import { cn } from "@/lib/utils";
 
 const defaultValues = {
   prompt: "",
@@ -38,10 +34,8 @@ const defaultValues = {
 
 const MusicGenerationPage = () => {
   const router = useRouter();
-
-  const [messages, setMessages] = useState<ChatCompletionUserMessageParam[]>(
-    []
-  );
+  const modal = useModal();
+  const [music, setMusic] = useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,21 +60,17 @@ const MusicGenerationPage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log("values", values);
     try {
-      const userMessage: ChatCompletionUserMessageParam = {
-        role: "user",
-        content: values?.prompt,
-      };
-      const newMessages = [...messages, userMessage];
-
-      const res = await axios.post("/api/conversation", {
-        messages: newMessages,
-      });
-
-      setMessages((current) => [res?.data, userMessage, ...current]);
-
+      setMusic("");
+      const res = await axios.post("/api/music", values);
+      setMusic(res?.data?.audio);
       form.reset();
     } catch (error: any) {
       console.error("onSubmit", error);
+      if (error?.response?.status === 403) {
+        modal.onOpen();
+      } else {
+        toast.error("something went wrong");
+      }
     } finally {
       router.refresh();
     }
@@ -116,30 +106,16 @@ const MusicGenerationPage = () => {
           </Form>
         </div>
         <div className="space-y-4 mt-4">
-          {form?.formState?.isSubmitting && (
+          {form?.formState?.isSubmitting ? (
             <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
               <Loader />
             </div>
-          )}
-          {messages?.length === 0 && !form?.formState?.isSubmitting ? (
+          ) : !music ? (
             <NoDataAvailable label="No music generated" />
           ) : (
-            <div className="flex flex-col-reverse gap-y-4 ">
-              {messages?.map((message, index) => (
-                <div
-                  key={index}
-                  className={cn(
-                    "px-8 py-3 flex w-full items-start gap-x-8 rounded-lg",
-                    message?.role === "user"
-                      ? "bg-white border border-black/10"
-                      : "bg-muted"
-                  )}
-                >
-                  {message?.role === "user" ? <UserAvatar /> : <BotAvatar />}
-                  <p className="text-sm">{message?.content}</p>
-                </div>
-              ))}
-            </div>
+            <audio controls className="w-full mt-8">
+              <source src={music} />
+            </audio>
           )}
         </div>
       </div>

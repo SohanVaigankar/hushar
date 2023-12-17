@@ -7,6 +7,9 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChatCompletionUserMessageParam } from "openai/resources/index.mjs";
+import toast from "react-hot-toast";
+// hooks
+import { useModal } from "@/hooks";
 
 // components
 import {
@@ -16,9 +19,14 @@ import {
   UserAvatar,
   BotAvatar,
 } from "@/components/atoms";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
+import {
+  Input,
+  Button,
+  Form,
+  FormField,
+  FormItem,
+  FormControl,
+} from "@/components/ui";
 
 // icons
 import { MessageSquare } from "lucide-react";
@@ -33,10 +41,11 @@ const defaultValues = {
 
 const ConversationPage = () => {
   const router = useRouter();
+  const modal = useModal();
 
-  const [messages, setMessages] = useState<ChatCompletionUserMessageParam[]>(
-    []
-  );
+  const [messages, setMessages] = useState<
+    ChatCompletionUserMessageParam[] | any[]
+  >([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -76,6 +85,11 @@ const ConversationPage = () => {
       form.reset();
     } catch (error: any) {
       console.error("onSubmit", error);
+      if (error?.response?.status === 403) {
+        modal.onOpen();
+      } else {
+        toast.error("something went wrong");
+      }
     } finally {
       router.refresh();
     }

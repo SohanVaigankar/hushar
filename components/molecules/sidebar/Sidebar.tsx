@@ -14,13 +14,21 @@ import {
   Settings,
   VideoIcon,
 } from "lucide-react";
-
+// components
+import { FreeTrialCounter } from "@/components/molecules";
 // fonts
 import { Montserrat } from "next/font/google";
 
 const montserrat = Montserrat({ weight: "600", subsets: ["latin"] });
 
 import { cn } from "@/lib/utils";
+
+interface SidebarProps {
+  freeTrialData: {
+    count: number;
+  };
+  isPro: boolean;
+}
 
 const routes = [
   {
@@ -67,7 +75,8 @@ const routes = [
   },
 ];
 
-const Sidebar = () => {
+export const Sidebar = (props: SidebarProps) => {
+  const { freeTrialData, isPro = false } = props;
   const pathname = usePathname();
 
   return (
@@ -103,8 +112,7 @@ const Sidebar = () => {
           ))}
         </div>
       </div>
+      <FreeTrialCounter count={freeTrialData?.count} isPro={isPro} />
     </div>
   );
 };
-
-export default Sidebar;
