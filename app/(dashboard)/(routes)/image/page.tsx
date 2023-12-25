@@ -161,17 +161,72 @@ const ImageGenerationPage = () => {
             >
               <FormField
                 name="prompt"
-                render={({ field }) => handleRender(field)}
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-12">
+                    <FormControl className="m-0 p-0">
+                      <Input
+                        className="border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent"
+                        disabled={form?.formState?.isSubmitting}
+                        placeholder="A yellow colored pigeon"
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
               />
               <FormField
                 name="quantity"
                 control={form?.control}
-                render={({ field }) => handleRender(field)}
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-6">
+                    <Select
+                      disabled={form?.formState?.isSubmitting}
+                      onValueChange={field?.onChange}
+                      value={field?.value}
+                      defaultValue={field?.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field?.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {quantityOptions?.map((option) => (
+                          <SelectItem key={option?.value} value={option?.value}>
+                            {option?.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
               />
               <FormField
                 name="resolution"
                 control={form?.control}
-                render={({ field }) => handleRender(field)}
+                render={({ field }) => (
+                  <FormItem className="col-span-12 lg:col-span-6">
+                    <Select
+                      disabled={form?.formState?.isSubmitting}
+                      onValueChange={field?.onChange}
+                      value={field?.value}
+                      defaultValue={field?.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue defaultValue={field?.value} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {resolutionOptions?.map((option) => (
+                          <SelectItem key={option?.value} value={option?.value}>
+                            {option?.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormItem>
+                )}
               />
               <Button
                 className="col-span-12 lg:col-span-2 w-full"
