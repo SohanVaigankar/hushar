@@ -10,10 +10,28 @@ import {
 
 const testimonials = [
   {
-    name: "Sohan",
-    avatar: "S",
-    title: "SDE",
+    name: "Tony Stark",
+    avatar: "TS",
+    title: "CTO",
     description: "A really productive application for daily tasks",
+  },
+  {
+    name: "Steve Rogers",
+    avatar: "SR",
+    title: "CEO",
+    description: "Finally I don't have to rely on Tony ",
+  },
+  {
+    name: "Bruce Wayne",
+    avatar: "BW",
+    title: "Generalist",
+    description: "I used this to buy the bank.",
+  },
+  {
+    name: "Peter Parker",
+    avatar: "PP",
+    title: "Intern",
+    description: "I use this as an alternative for Mr. Stark's AI",
   },
 ];
 export const LandingContent = () => {
@@ -27,6 +45,7 @@ export const LandingContent = () => {
           <Card key={index} className="bg-[#192339] border-none text-white">
             <CardHeader>
               <CardTitle className="flex items-center gap-x-2">
+              <div className="p-2 text-[1.2rem] bg-[#f5f5f51e] rounded-full h-12 w-12 flex justify-center items-center"><div>{item?.avatar}</div></div>
                 <div>
                   <p className="text-lg">{item?.name}</p>
                   <p className="text-zinc-400 text-sm">{item?.title}</p>
